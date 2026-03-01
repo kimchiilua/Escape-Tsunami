@@ -1,10 +1,12 @@
-local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+-- // Configuration
+local branding = "my skibidi name" -- Change this to "Custom" or whatever you like!
 
+-- // Setup
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local players = game:GetService("Players")
 local cs = game:GetService("CollectionService")
 local lp = players.LocalPlayer
 
--- used an AI to list down pets lol losakldlskablkdaskl
 local petdata = {
     Secret = {
         "Matteo", "Gattatino Neonino", "Statutino Libertino", "Unclito Samito",
@@ -45,7 +47,7 @@ local state = {
     scale    = 1.2,
 }
 
--- functions
+-- // Functions
 local function getmybase()
     local bf = workspace:FindFirstChild("Bases")
     if not bf then return nil end
@@ -77,9 +79,9 @@ end
 
 local function spawnpet()
     local base = getmybase()
-    if not base then warn("[sillycopper] base not found!") return end
+    if not base then warn("[" .. branding .. "] Base not found!") return end
     local slot = getfirstemptyslot(base)
-    if not slot then warn("[sillycopper] no empty slot!") return end
+    if not slot then warn("[" .. branding .. "] No empty slot!") return end
 
     local cont = Instance.new("Folder")
     cont.Name = "VisualPetContainer"
@@ -99,14 +101,13 @@ local function spawnpet()
     cont:SetAttribute("Mutation", state.mutation)
     cs:AddTag(cont, "RenderBrainrot")
 
-    print(("[sillycopper] spawned: %s | %s | lv%d | x%.1f"):format(state.pet, state.mutation, state.level, state.scale))
+    print(branding .. " Spawning.. : " .. state.pet)
 end
 
-
--- rayfield components
+-- // UI Window
 local window = Rayfield:CreateWindow({
-    Name = "sillycopper spawner ez",
-    LoadingTitle = "sillycopper",
+    Name = branding .. " Spawner",
+    LoadingTitle = branding,
     LoadingSubtitle = "spawner ez",
     Theme = "Default",
     DisableRayfieldPrompts = true,
@@ -115,14 +116,15 @@ local window = Rayfield:CreateWindow({
     KeySystem = false,
 })
 
+-- // Tabs
 local tabsecret = window:CreateTab("Secret", "star")
-tabsecret:CreateSection("select pet")
+tabsecret:CreateSection("Select Pet")
 
 local secretpetnames = {}
 for _, p in ipairs(petdata.Secret) do table.insert(secretpetnames, p) end
 
 tabsecret:CreateDropdown({
-    Name = "pet",
+    Name = "Pet",
     Options = secretpetnames,
     CurrentOption = { secretpetnames[1] },
     MultipleOptions = false,
@@ -134,13 +136,13 @@ tabsecret:CreateDropdown({
 })
 
 local tabcelestial = window:CreateTab("Celestial", "sparkles")
-tabcelestial:CreateSection("select pet")
+tabcelestial:CreateSection("Select Pet")
 
 local celestialpetnames = {}
 for _, p in ipairs(petdata.Celestial) do table.insert(celestialpetnames, p) end
 
 tabcelestial:CreateDropdown({
-    Name = "pet",
+    Name = "Pet",
     Options = celestialpetnames,
     CurrentOption = { celestialpetnames[1] },
     MultipleOptions = false,
@@ -152,13 +154,13 @@ tabcelestial:CreateDropdown({
 })
 
 local tabdivine = window:CreateTab("Divine", "crown")
-tabdivine:CreateSection("select pet")
+tabdivine:CreateSection("Select Pet")
 
 local divinepetnames = {}
 for _, p in ipairs(petdata.Divine) do table.insert(divinepetnames, p) end
 
 tabdivine:CreateDropdown({
-    Name = "pet",
+    Name = "Pet",
     Options = divinepetnames,
     CurrentOption = { divinepetnames[1] },
     MultipleOptions = false,
@@ -170,10 +172,10 @@ tabdivine:CreateDropdown({
 })
 
 local tabsettings = window:CreateTab("Settings", "settings")
-tabsettings:CreateSection("pet options")
+tabsettings:CreateSection("Pet Options")
 
 tabsettings:CreateDropdown({
-    Name = "mutation",
+    Name = "Mutation",
     Options = mutations,
     CurrentOption = { "None" },
     MultipleOptions = false,
@@ -184,7 +186,7 @@ tabsettings:CreateDropdown({
 })
 
 tabsettings:CreateSlider({
-    Name = "level",
+    Name = "Level",
     Range = { 1, 1000 },
     Increment = 1,
     Suffix = "",
@@ -196,7 +198,7 @@ tabsettings:CreateSlider({
 })
 
 tabsettings:CreateSlider({
-    Name = "scale",
+    Name = "Scale",
     Range = { 0.1, 5 },
     Increment = 0.1,
     Suffix = "x",
@@ -207,48 +209,49 @@ tabsettings:CreateSlider({
     end,
 })
 
-tabsettings:CreateSection("spawn")
+-- // Spawn Buttons
+tabsettings:CreateSection("Spawn")
 
 tabsettings:CreateButton({
-    Name = "Spawn pet",
+    Name = "Spawn Pet",
     Callback = function()
         spawnpet()
         Rayfield:Notify({
-            Title = "sillycopper",
-            Content = "spawned: " .. state.pet,
+            Title = branding .. " Spawning..",
+            Content = "Spawned: " .. state.pet,
             Duration = 3,
             Image = "check",
         })
     end,
 })
 
-tabsecret:CreateSection("spawn")
+tabsecret:CreateSection("Spawn")
 tabsecret:CreateButton({
-    Name = "Spawn selected pet",
+    Name = "Spawn Selected Pet",
     Callback = function()
         state.rarity = "Secret"
         spawnpet()
-        Rayfield:Notify({ Title = "sillycopper", Content = "spawned: " .. state.pet, Duration = 3, Image = "check" })
+        Rayfield:Notify({ Title = branding .. " Spawning..", Content = "Spawned: " .. state.pet, Duration = 3, Image = "check" })
     end,
 })
 
-tabcelestial:CreateSection("spawn")
+tabcelestial:CreateSection("Spawn")
 tabcelestial:CreateButton({
-    Name = "Spawn selected pet",
+    Name = "Spawn Selected Pet",
     Callback = function()
         state.rarity = "Celestial"
         spawnpet()
-        Rayfield:Notify({ Title = "sillycopper", Content = "spawned: " .. state.pet, Duration = 3, Image = "check" })
+        Rayfield:Notify({ Title = branding .. " Spawning..", Content = "Spawned: " .. state.pet, Duration = 3, Image = "check" })
     end,
 })
 
-tabdivine:CreateSection("spawn")
+tabdivine:CreateSection("Spawn")
 tabdivine:CreateButton({
-    Name = "Spawn selected pet",
+    Name = "Spawn Selected Pet",
     Callback = function()
         state.rarity = "Divine"
         spawnpet()
-        Rayfield:Notify({ Title = "sillycopper", Content = "spawned: " .. state.pet, Duration = 3, Image = "check" })
+        Rayfield:Notify({ Title = branding .. " Spawning..", Content = "Spawned: " .. state.pet, Duration = 3, Image = "check" })
     end,
 })
 
